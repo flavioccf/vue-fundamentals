@@ -4,14 +4,19 @@
       <nav>
         <ul>
           <li class="nav-item">
-            <img src="./assets/build-a-bot-logo.png" alt="" class="logo" />
-            Build-a-bot
+            <router-link :to="{ name: 'Home' }" tag="span">
+              <img src="./assets/build-a-bot-logo.png" alt="" class="logo" />
+              Build-a-bot
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <span @click="$router.back()">Go Back</span>
           </li>
         </ul>
       </nav>
     </header>
     <main>
-      <RobotBuilder />
+      <router-view />
     </main>
   </div>
 </template>
@@ -72,5 +77,8 @@ body {
       }
     }
   }
+}
+.router-link-exact-active {
+  color: white;
 }
 </style>
