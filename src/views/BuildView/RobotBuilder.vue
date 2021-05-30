@@ -64,6 +64,11 @@ import CollapsibleSection from "@/components/CollapsibleSection.vue";
 
 export default Vue.extend({
   name: "RobotBuilder",
+  beforeRouteLeave(to, from, next) {
+    if (this.addedToCart) next(undefined);
+    const response = confirm("You are leaving the page?");
+    next(response ? undefined : false);
+  },
   components: { PartSelector, CollapsibleSection },
   beforeCreate() {
     console.log("hey");
@@ -72,6 +77,7 @@ export default Vue.extend({
   data() {
     return {
       availableParts,
+      addedToCart: false,
       cart: [],
       selectedRobot: {
         head: {},

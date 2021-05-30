@@ -10,11 +10,21 @@
             </router-link>
           </li>
           <li class="nav-item">
+            <router-link :to="{ name: 'BrowseParts' }" tag="span">
+              Browse Parts
+            </router-link>
+          </li>
+          <li class="nav-item">
             <span @click="$router.back()">Go Back</span>
           </li>
         </ul>
       </nav>
     </header>
+    <div class="container">
+      <aside class="aside">
+        <router-view name="sidebar"></router-view>
+      </aside>
+    </div>
     <main>
       <router-view />
     </main>
@@ -80,5 +90,15 @@ body {
 }
 .router-link-exact-active {
   color: white;
+}
+.container {
+  margin: 10px auto 0 auto;
+  display: flex;
+  justify-content: center;
+  .aside {
+    padding: 30px;
+    width: 100px;
+    background: #aaa;
+  }
 }
 </style>

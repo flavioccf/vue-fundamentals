@@ -57,6 +57,8 @@ export default Vue.extend({
       this.$router.push({
         name: "Parts",
         params: {
+          partType: parts.type,
+          id: parts.id,
           parts: JSON.stringify(parts),
         },
       });
