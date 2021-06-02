@@ -15,6 +15,11 @@
             </router-link>
           </li>
           <li class="nav-item">
+            <router-link :to="{ name: 'Cart' }" tag="span">
+              Cart <sup>{{ cart.length }}</sup>
+            </router-link>
+          </li>
+          <li class="nav-item">
             <span @click="$router.back()">Go Back</span>
           </li>
         </ul>
@@ -40,6 +45,11 @@ import RobotBuilder from "@/views/BuildView/RobotBuilder.vue";
   components: {
     HomePage,
     RobotBuilder,
+  },
+  computed: {
+    cart() {
+      return this.$store.state.cart;
+    },
   },
 })
 export default class App extends Vue {}

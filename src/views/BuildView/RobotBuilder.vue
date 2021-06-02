@@ -15,6 +15,7 @@
             <img :src="selectedRobot.base.src" />
           </div>
         </div>
+        <button @click="addToCart">Add To Cart</button>
       </div>
     </CollapsibleSection>
     <div class="top-row">
@@ -65,9 +66,12 @@ import CollapsibleSection from "@/components/CollapsibleSection.vue";
 export default Vue.extend({
   name: "RobotBuilder",
   beforeRouteLeave(to, from, next) {
-    if (this.addedToCart) next(undefined);
-    const response = confirm("You are leaving the page?");
-    next(response ? undefined : false);
+    if (this.addedToCart) {
+      next(undefined);
+    } else {
+      const response = confirm("You are leaving the page?");
+      next(response ? undefined : false);
+    }
   },
   components: { PartSelector, CollapsibleSection },
   beforeCreate() {
@@ -98,7 +102,19 @@ export default Vue.extend({
       return { border: head.onSale ? "3px solid red" : "" };
     },
   },
-  methods: {},
+  methods: {
+    addToCart() {
+      const robot: Record<string, any> = this.selectedRobot;
+      const cost =
+        robot.head.cost +
+        robot.leftArm.cost +
+        robot.torso.cost +
+        robot.rightArm.cost +
+        robot.base.cost;
+      this.$store.commit("addRobotToCart", Object.assign({}, robot, { cost }));
+      this.addedToCart = true;
+    },
+  },
 });
 </script>
 

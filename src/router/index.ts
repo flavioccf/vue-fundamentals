@@ -8,6 +8,7 @@ import RobotPart from "@/views/PartsView/RobotPart.vue";
 import SidebarStandard from "@/components/Sidebar/SidebarStandard.vue";
 import SidebarBuild from "@/components/Sidebar/SidebarBuild.vue";
 import RobotBuilder from "@/views/BuildView/RobotBuilder.vue";
+import ShoppingCart from "@/views/CartView/ShoppingCart.vue";
 
 Vue.use(VueRouter);
 
@@ -17,7 +18,7 @@ const routes: Array<RouteConfig> = [
     name: "Home",
     components: {
       default: Home,
-      sidebar: SidebarStandard
+      sidebar: SidebarStandard,
     },
   },
   {
@@ -25,7 +26,7 @@ const routes: Array<RouteConfig> = [
     name: "Build",
     components: {
       default: RobotBuilder,
-      sidebar: SidebarBuild
+      sidebar: SidebarBuild,
     },
   },
   {
@@ -57,14 +58,21 @@ const routes: Array<RouteConfig> = [
       ...route.params,
     }),
     beforeEnter(to, from, next) {
-      const isValidId: any = (Number.isInteger(Number(to.params.id))) ? undefined : false;
+      const isValidId: any = Number.isInteger(Number(to.params.id))
+        ? undefined
+        : false;
       next(isValidId);
-    }
+    },
   },
   {
     path: "*",
     name: "NotFound",
     component: NotFound,
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: ShoppingCart,
   },
 ];
 

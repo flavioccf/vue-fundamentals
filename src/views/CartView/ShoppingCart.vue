@@ -25,6 +25,11 @@
 <script lang="ts">
 export default {
   name: "Cart",
+  computed: {
+    cart(): Record<string, unknown> {
+      return this.$store.state.cart;
+    },
+  },
 };
 </script>
 
