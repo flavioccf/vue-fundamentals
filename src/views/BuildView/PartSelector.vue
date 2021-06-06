@@ -8,7 +8,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
+import { Part } from "@/interfaces/index";
 
 function getPreviousValidIndex(index: number, length: number) {
   const deprecatedIndex = index - 1;
@@ -23,7 +24,7 @@ function getNextValidIndex(index: number, length: number) {
 export default Vue.extend({
   props: {
     parts: {
-      type: Array,
+      type: Array as PropType<Part[]>,
       required: true,
     },
     position: {
@@ -40,7 +41,7 @@ export default Vue.extend({
   computed: {
     selectedPart() {
       const selectedPart: number = this.selectedPartIndex;
-      const parts: Array<unknown> = this.parts;
+      const parts: Part[] = this.parts;
       return parts[selectedPart];
     },
   },
@@ -52,13 +53,13 @@ export default Vue.extend({
   },
   methods: {
     showPartInfo() {
-      const parts: any = this.selectedPart;
+      const parts: Part = this.selectedPart;
       console.log(parts);
       this.$router.push({
         name: "Parts",
         params: {
           partType: parts.type,
-          id: parts.id,
+          id: parts.id.toString(),
           parts: JSON.stringify(parts),
         },
       });

@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import availableParts from "@/api/parts";
 
 export default Vue.extend({
   name: "PartInfo",
@@ -34,9 +33,12 @@ export default Vue.extend({
   created() {
     const parts = this.$route.params.parts;
     if (parts) {
+      console.log("im here");
       this.part = JSON.parse(parts);
     } else {
-      const availablePart: any = availableParts;
+      console.log("running here");
+      this.$store.dispatch("getParts");
+      const availablePart: any = this.$store.state.parts;
       this.part = availablePart[this.partType][this.id];
     }
   },

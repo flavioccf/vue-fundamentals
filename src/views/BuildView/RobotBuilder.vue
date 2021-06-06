@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div v-if="availableParts" class="content">
     <CollapsibleSection>
       <div class="preview">
         <div class="preview-content">
@@ -19,10 +19,6 @@
       </div>
     </CollapsibleSection>
     <div class="top-row">
-      <!-- <div class="robot-name">
-        {{ selectedRobot.head.title }}
-        <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
-      </div> -->
       <PartSelector
         :parts="availableParts.heads"
         position="top"
@@ -57,14 +53,37 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import availableParts from "@/api/parts";
-import createdHookMixin from "@/mixins/created-hook-mixin";
+import { Component, Vue, Mixins } from "vue-property-decorator";
+import GetPartsMixin from "@/mixins/get-parts-mixin";
 import PartSelector from "@/views/BuildView/PartSelector.vue";
 import CollapsibleSection from "@/components/CollapsibleSection.vue";
+import { Part, Robot } from "@/interfaces/index";
 
-export default Vue.extend({
+@Component({
   name: "RobotBuilder",
+  data() {
+    return {
+      addedToCart: false as boolean,
+      cart: [] as Robot[],
+      selectedRobot: {
+        head: {},
+        leftArm: {},
+        rightArm: {},
+        torso: {},
+        base: {},
+      } as Robot,
+    };
+  },
+  computed: {
+    saleBorderClass(): string {
+      const head: Part = this.selectedRobot.head;
+      return head.onSale ? "sale-border" : "";
+    },
+    headBorderStyle(): Record<string, unknown> {
+      const head: Part = this.selectedRobot.head;
+      return { border: head.onSale ? "3px solid red" : "" };
+    },
+  },
   beforeRouteLeave(to, from, next) {
     if (this.addedToCart) {
       next(undefined);
@@ -74,37 +93,9 @@ export default Vue.extend({
     }
   },
   components: { PartSelector, CollapsibleSection },
-  beforeCreate() {
-    console.log("hey");
-  },
-  mixins: [createdHookMixin],
-  data() {
-    return {
-      availableParts,
-      addedToCart: false,
-      cart: [],
-      selectedRobot: {
-        head: {},
-        leftArm: {},
-        rightArm: {},
-        torso: {},
-        base: {},
-      },
-    };
-  },
-  computed: {
-    saleBorderClass() {
-      const head: any = this.selectedRobot.head;
-      return head.onSale ? "sale-border" : "";
-    },
-    headBorderStyle() {
-      const head: any = this.selectedRobot.head;
-      return { border: head.onSale ? "3px solid red" : "" };
-    },
-  },
   methods: {
     addToCart() {
-      const robot: Record<string, any> = this.selectedRobot;
+      const robot: Robot = this.selectedRobot;
       const cost =
         robot.head.cost +
         robot.leftArm.cost +
@@ -115,7 +106,8 @@ export default Vue.extend({
       this.addedToCart = true;
     },
   },
-});
+})
+export default class RobotBuilder extends Mixins(GetPartsMixin) {}
 </script>
 
 <style scoped lang="scss">
